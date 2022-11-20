@@ -81,7 +81,7 @@ func getStock(id int64) (models.Stock, error) {
 	defer db.Close()
 	sqlStatement := `SELECT * FROM stocks WHERE stockid=$1`
 	row := db.QueryRow(sqlStatement, id)
-	err := row.Scan(&stock.StockId, &stock.Name, &stock.Price, &stock.Company)
+	err := row.Scan(id, &stock.Name, &stock.Price, &stock.Company)
 	switch err {
 	case sql.ErrNoRows:
 		fmt.Println("No rows were returned ")
@@ -136,7 +136,7 @@ func deleteStock(id int64) int64 {
 	db := createConnection()
 	defer db.Close()
 
-	sqlStatement := `DELETE * FROM stocks WHERE stockid=$1`
+	sqlStatement := `DELETE  FROM stocks WHERE stockid=$1`
 	row, err := db.Exec(sqlStatement, id)
 	if err != nil {
 		log.Fatalf("Unable to delete the row. %v", err)
